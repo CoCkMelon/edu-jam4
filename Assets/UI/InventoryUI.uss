@@ -1,0 +1,86 @@
+/* Inventory Styles */
+.inventory-panel {
+    flex-direction: column;
+    width: 350px;
+    background-color: #2f2f2f;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.inventory-header,
+.inventory-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inventory-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.close-button,
+.action-button {
+    background-color: #3f3f3f;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.danger-button {
+    background-color: #b22222;
+}
+
+.inventory-stats {
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.stat-label {
+    color: #dddddd;
+    font-size: 12px;
+    text-align: center;
+}
+
+.item-container {
+    flex-grow: 1;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding: 5px;
+    background-color: #1f1f1f;
+    border: 1px solid #444444;
+    border-radius: 6px;
+}
+
+.inventory-item {
+    flex-direction: row;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #404040;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.item-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    background-size: cover;
+}
+
+.item-info .item-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.item-info .item-value,
+.item-info .item-quantity,
+.item-info .item-weight {
+    font-size: 12px;
+    color: #dddddd;
+}

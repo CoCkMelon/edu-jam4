@@ -1,0 +1,210 @@
+/* Simple Dialogue System Styles - Unity UI Toolkit Compatible */
+
+/* Basic dialogue container */
+.dialogue-container {
+    min-width: 300px;
+    max-width: 800px;
+}
+
+/* Choice buttons */
+.choice-button {
+    margin-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: rgba(70, 130, 180, 0.8);
+    color: rgb(255, 255, 255);
+    border-width: 0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.choice-button:hover {
+    background-color: rgba(100, 149, 237, 1);
+}
+
+.choice-button:active {
+    background-color: rgba(50, 100, 150, 1);
+}
+
+/* Control buttons */
+.control-button {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    border-width: 0;
+}
+
+.control-button:hover {
+    opacity: 0.8;
+}
+
+/* Primary button styling */
+.primary-button {
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* History entries */
+.history-entry {
+    margin-bottom: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left-width: 3px;
+    border-left-color: rgb(100, 149, 237);
+}
+
+.history-text {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    white-space: normal;
+}
+
+/* Text styling */
+.dialogue-text {
+    -unity-text-align: left;
+    white-space: normal;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+}
+
+.speaker {
+    color: rgb(255, 215, 0);
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+/* Portrait styling */
+.portrait {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.portrait-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+/* Scrollbar styling */
+.unity-scroll-view__vertical-scroller {
+    width: 12px;
+}
+
+.unity-scroller__slider {
+    background-color: rgba(100, 149, 237, 0.3);
+    border-radius: 6px;
+}
+
+.unity-scroller__slider:hover {
+    background-color: rgba(100, 149, 237, 0.5);
+}
+
+/* Typing indicator */
+.typing-dot {
+    color: rgb(100, 149, 237);
+    font-size: 8px;
+}
+
+/* Animation status */
+.animation-status {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    -unity-font-style: italic;
+}
+
+/* Mood icon */
+.mood {
+    font-size: 18px;
+}
+
+/* Content areas */
+.content-area {
+    flex-grow: 1;
+}
+
+.choices-container {
+    margin-bottom: 15px;
+}
+
+.choices-prompt {
+    color: rgb(255, 215, 0);
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+/* Panels and overlays */
+.dialogue-panel {
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-width: 2px;
+    border-color: rgb(100, 149, 237);
+}
+
+.history-overlay {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.history-panel {
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-width: 2px;
+    border-color: rgb(100, 149, 237);
+}
+
+/* Speech bubble */
+.speech-bubble {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    max-width: 300px;
+}
+
+.bubble-text {
+    color: rgb(0, 0, 0);
+    font-size: 14px;
+    white-space: normal;
+}
+
+/* Interaction prompt */
+.interaction-prompt {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.interaction-key {
+    color: rgb(255, 215, 0);
+    font-size: 16px;
+    -unity-font-style: bold;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}

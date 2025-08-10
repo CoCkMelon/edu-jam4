@@ -1,0 +1,150 @@
+/* Dialogue System Styles */
+
+/* Typing indicator (simplified for Unity UI Toolkit) */
+.typing-dot {
+    transition-property: opacity;
+    transition-duration: 500ms;
+    opacity: 1;
+}
+
+/* Choice buttons */
+.choice-button {
+    margin-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: rgba(70, 130, 180, 0.8);
+    color: rgb(255, 255, 255);
+    border-width: 0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition-property: background-color;
+    transition-duration: 200ms;
+}
+
+.choice-button:hover {
+    background-color: rgba(100, 149, 237, 1);
+    transform: scale(1.02);
+}
+
+.choice-button:active {
+    background-color: rgba(70, 130, 180, 1);
+    transform: scale(0.98);
+}
+
+/* Control buttons hover effects */
+.control-button:hover {
+    transform: scale(1.05);
+    transition-property: transform;
+    transition-duration: 200ms;
+}
+
+.control-button:active {
+    transform: scale(0.95);
+}
+
+/* Primary button special styling */
+.primary-button {
+    /* Unity UI Toolkit doesn't support box-shadow */
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* History entries */
+.history-entry {
+    margin-bottom: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left-width: 3px;
+    border-left-color: rgb(100, 149, 237);
+}
+
+.history-text {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    white-space: normal;
+}
+
+/* Responsive design helpers */
+.dialogue-container {
+    min-width: 300px;
+    max-width: 800px;
+}
+
+/* Portrait placeholder styling */
+.portrait {
+    /* Unity UI Toolkit background-image syntax */
+    background-image: resource('UI/Icons/default-portrait');
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+/* Custom scrollbar styling */
+.unity-scroll-view__vertical-scroller {
+    width: 12px;
+}
+
+.unity-scroller__slider {
+    background-color: rgba(100, 149, 237, 0.3);
+    border-radius: 6px;
+}
+
+.unity-scroller__slider:hover {
+    background-color: rgba(100, 149, 237, 0.5);
+}
+
+/* Text selection styling */
+.dialogue-text {
+    -unity-text-align: left;
+    text-overflow: ellipsis;
+}
+
+/* Make sure text wraps properly */
+.dialogue-text,
+.history-text,
+.bubble-text {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* Speech bubble styling */
+.speech-bubble {
+    /* Unity UI Toolkit doesn't support ::after pseudo-elements */
+    /* Custom arrow would need to be implemented as separate element */
+}
+
+/* Touch/mobile optimizations - Unity UI Toolkit doesn't support @media queries */
+/* These would need to be handled in C# code based on screen size */
+.dialogue-panel-mobile {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.control-button-mobile {
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+}
+
+.character-portrait-container-mobile {
+    width: 60px;
+    height: 60px;
+}
+
+.portrait-mobile {
+    width: 50px;
+    height: 50px;
+}

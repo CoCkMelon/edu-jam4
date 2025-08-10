@@ -1,0 +1,27 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.1.15f1
+CRC: 3932068474
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 260d80720a91b556d204992e358656f2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ca5df0a7355cacc8c902c6c70dd8ea3c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 06379c579c84f2a42e98a17a4bbb719c
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 5bf7c34a0dc4e6348bea04faa70406ee, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.2D.Animation.Runtime
+  ClassName: UnityEngine.U2D.Animation.SpriteCategoryEntry
+- AssemblyName: Unity.2D.Animation.Runtime
+  ClassName: UnityEngine.U2D.Animation.SpriteLibCategory
+Assets:
+- Assets/Samples/2D Animation/11.0.0/Samples/4 SpriteSwap/Sprite Library/Skeleton.spriteLib
+Dependencies: []

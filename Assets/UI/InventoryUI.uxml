@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="inventory-panel" class="inventory-panel">
+        <ui:VisualElement name="header" class="inventory-header">
+            <ui:Label text="Inventory" name="title" class="inventory-title" />
+            <ui:Button name="close-button" text="×" class="close-button" />
+        </ui:VisualElement>
+        
+        <ui:VisualElement name="stats" class="inventory-stats">
+            <ui:Label name="weight-label" text="Weight: 0/50" class="stat-label" />
+            <ui:Label name="value-label" text="Value: $0" class="stat-label" />
+            <ui:Label name="slots-label" text="Slots: 0/20" class="stat-label" />
+        </ui:VisualElement>
+        
+        <ui:ScrollView name="item-container" class="item-container" scroll-deceleration-rate="0.135" elasticity="0.1">
+            <!-- Items will be added dynamically here -->
+        </ui:ScrollView>
+        
+        <ui:VisualElement name="footer" class="inventory-footer">
+            <ui:Button name="drop-all-button" text="Drop All" class="action-button danger-button" />
+            <ui:Button name="sort-button" text="Sort" class="action-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

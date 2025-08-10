@@ -1,0 +1,9 @@
+title: "Test Dialogue"
+lines:
+  - id: "start"
+    speaker: "Guard"
+    text: "Hey, you're not supposed to be here!"
+    
+  - speaker: "Player"
+    text: "I was just leaving leaves..."
+    trigger: "start_stealth_mode"

@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MathRunnerGame.uss?fileID=7433441132597879392&amp;guid=f0ec056e957f667179dab27ddf3a92bd&amp;type=3#MathRunnerGame" />
+    <ui:VisualElement name="game-container" style="flex-grow: 1; background-color: rgb(20, 20, 40);">
+        <ui:VisualElement name="ui-overlay" style="position: absolute; width: 100%; height: 100%; pointer-events: none;">
+            <ui:VisualElement name="top-panel" style="flex-direction: row; padding: 20px; pointer-events: initial;">
+                <ui:Label name="score-label" text="Score: 0" style="font-size: 24px; color: white; margin-right: 30px;" />
+                <ui:Label name="task-label" text="5 + 3 = ?" style="font-size: 28px; color: yellow; flex-grow: 1; -unity-text-align: middle-center;" />
+                <ui:Label name="lives-label" text="Lives: 3" style="font-size: 24px; color: rgb(255, 100, 100);" />
+            </ui:VisualElement>
+            <ui:Label name="feedback-label" style="position: absolute; top: 100px; width: 100%; font-size: 36px; color: rgb(100, 255, 100); -unity-text-align: middle-center; display: none;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="game-world" style="flex-grow: 1; position: relative;">
+            <ui:VisualElement name="number-lines-container" style="position: absolute; width: 100%; height: 100%;" />
+            <ui:VisualElement name="player" style="position: absolute; width: 50px; height: 50px; background-color: rgb(100, 200, 255); border-radius: 25px; left: 100px; top: 300px;">
+                <ui:VisualElement name="player-trail" style="position: absolute; width: 30px; height: 30px; background-color: rgba(100, 200, 255, 0.3); border-radius: 15px; left: -20px; top: 10px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="game-over-panel" style="position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center;">
+            <ui:VisualElement style="background-color: rgb(40, 40, 60); padding: 40px; border-radius: 10px;">
+                <ui:Label name="game-over-title" text="Game Over!" style="font-size: 48px; color: white; margin-bottom: 20px; -unity-text-align: middle-center;" />
+                <ui:Label name="final-score-label" text="Final Score: 0" style="font-size: 32px; color: yellow; margin-bottom: 30px; -unity-text-align: middle-center;" />
+                <ui:Button name="restart-button" text="Restart" style="font-size: 24px; padding: 10px 30px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -9,8 +9,19 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        bool shouldDestroy = false;
         if (!other.CompareTag("Player")) return;
+
+        TryLoadDialogue();
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        TryLoadDialogue();
+    }
+    void TryLoadDialogue()
+    {
+        bool shouldDestroy = false;
 
         if (!string.IsNullOrEmpty(dialogueScenePath))
         {

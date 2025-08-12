@@ -1,25 +1,40 @@
 .number-line {
     position: absolute;
-    flex-direction: row;
-    align-items: center;
     width: 100%;
-    height: 80px;
+    height: 100%;
+    pointer-events: none;
+}
+
+.number-gate-container {
+    position: absolute;
+    left: 800px;
+    width: 120px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .number-gate {
     width: 100px;
     height: 70px;
     background-color: rgba(255, 255, 255, 0.1);
-    border: 3px solid rgb(100, 255, 100);
+    border: 3px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
-    margin: 0 5px;
     justify-content: center;
     align-items: center;
+    transition: border-color 0.2s;
 }
 
 .number-gate-wrong {
-    border-color: rgb(255, 100, 100);
+    border-color: rgba(255, 100, 100, 0.7);
     background-color: rgba(255, 100, 100, 0.1);
+}
+
+.number-gate-correct {
+    border-color: rgba(100, 255, 100, 0.7);
+    background-color: rgba(100, 255, 100, 0.1);
 }
 
 .number-text {
@@ -29,7 +44,6 @@
     -unity-font-style: bold;
 }
 
-.pulse-animation {
-    transition: scale 0.3s;
-    scale: 1.2;
+.player-physics {
+    transition: transform 0.1s;
 }

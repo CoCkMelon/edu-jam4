@@ -1,0 +1,33 @@
+.math-number-label {
+    font-size: 20px;
+    color: rgb(150, 150, 150);
+    -unity-font: url("project://database/Assets/Fonts/DepartureMono-Regular.otf?fileID=12800000&guid=ce292090b2100f229baf03358ef176e9&type=3#DepartureMono-Regular");
+    -unity-text-align: middle-center;
+    position: absolute;
+    width: 100px;
+    -unity-font-definition: url("project://database/Assets/Fonts/DepartureMono-Regular.otf?fileID=12800000&guid=ce292090b2100f229baf03358ef176e9&type=3#DepartureMono-Regular");
+}
+
+.math-number-label-highlighted {
+    font-size: 28px;
+    color: rgb(255, 255, 0);
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Fonts/DepartureMono-Regular.otf?fileID=12800000&guid=ce292090b2100f229baf03358ef176e9&type=3#DepartureMono-Regular");
+}
+
+.math-obstacle {
+    position: absolute;
+    background-color: rgb(255, 100, 100);
+    width: 40px;
+    height: 80px;
+    -unity-font-definition: url("project://database/Assets/Fonts/DepartureMono-Regular.otf?fileID=12800000&guid=ce292090b2100f229baf03358ef176e9&type=3#DepartureMono-Regular");
+}
+
+.math-collectible {
+    position: absolute;
+    background-color: rgb(100, 255, 100);
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    -unity-font-definition: url("project://database/Assets/Fonts/DepartureMono-Regular.otf?fileID=12800000&guid=ce292090b2100f229baf03358ef176e9&type=3#DepartureMono-Regular");
+}

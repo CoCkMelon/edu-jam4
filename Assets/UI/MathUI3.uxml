@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MathUI3.uss?fileID=7433441132597879392&amp;guid=3d1eceea4affd4d458bc859775218dd5&amp;type=3#MathUI3" />
+    <ui:VisualElement name="MathRhythmContainer" style="flex-grow: 1; background-color: rgb(20, 25, 40); -unity-font-definition: url(&quot;project://database/Assets/Fonts/DepartureMono-Regular.otf?fileID=12800000&amp;guid=ce292090b2100f229baf03358ef176e9&amp;type=3#DepartureMono-Regular&quot;);">
+        <ui:VisualElement name="MathTopPanel" style="height: 100px; background-color: rgba(0, 0, 0, 0.5); padding: 10px; flex-direction: row; justify-content: space-between;">
+            <ui:Label name="MathTaskLabel" text="5 + 3 = ?" style="font-size: 36px; color: white; -unity-text-align: middle-left;" />
+            <ui:Label name="MathScoreLabel" text="Score: 0" style="font-size: 24px; color: rgb(255, 215, 0); -unity-text-align: middle-right;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="MathGameArea" style="flex-grow: 1; position: relative;">
+            <ui:VisualElement name="MathNumberRuler" style="position: absolute; right: auto; top: 0; bottom: 0; width: 100px; left: 5%;" />
+            <ui:VisualElement name="MathAnswerLine" style="position: absolute; right: auto; top: 0; bottom: 0; width: 4px; background-color: rgb(255, 255, 0); left: 50%;" />
+            <ui:VisualElement name="MathPlayerUFO" style="position: absolute; width: 60px; height: 60px; right: auto; background-color: rgb(0, 255, 255); border-radius: 30px; left: 15%;">
+                <ui:VisualElement style="position: absolute; width: 80px; height: 20px; background-color: rgb(0, 200, 200); border-radius: 10px; top: 20px; left: -10px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="MathMovingElements" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="MathControlsPanel" style="height: 60px; background-color: rgba(0, 0, 0, 0.5); justify-content: center;">
+            <ui:Label name="MathControlsLabel" text="SPACE or CLICK to fly up" style="font-size: 18px; color: rgba(255, 255, 255, 0.7); -unity-text-align: middle-center;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

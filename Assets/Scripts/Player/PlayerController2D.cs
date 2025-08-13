@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -65,6 +66,7 @@ public class PlayerController2D : MonoBehaviour
     readonly int DASH_READY_HASH = Animator.StringToHash("dash_ready");
     readonly int GROUNDED_HASH = Animator.StringToHash("grounded");
     readonly int VELOCITY_Y_HASH = Animator.StringToHash("velocity_y");
+    readonly int VELOCITY_X_HASH = Animator.StringToHash("velocity_x");
 
     // State tracking
     private bool isGrounded;
@@ -305,6 +307,7 @@ public class PlayerController2D : MonoBehaviour
         animator.SetBool(DASH_READY_HASH, Time.time > lastDashTime + dashCooldown);
         animator.SetBool(GROUNDED_HASH, isGrounded);
         animator.SetFloat(VELOCITY_Y_HASH, rb.linearVelocity.y);
+        animator.SetFloat(VELOCITY_X_HASH, input.moveX+Convert.ToInt32(isDashing));
     }
 
     private void FlipSprite()

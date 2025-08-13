@@ -12,7 +12,6 @@ public class ChunkedWorld : MonoBehaviour
     [Header("Tilemap")]
     public Tilemap tilemap;
 
-    [Header("Tiles")]
     public TileBase dirt, grass, stone, wood, leaf, cloud, lava;
 
     [Header("World Settings")]
@@ -73,7 +72,6 @@ public class ChunkedWorld : MonoBehaviour
 
     void EnqueueVisibleChunks()
     {
-        if (cam == null) return;
         Vector3 worldCenter = cam.transform.position;
         // Convert world pos to tile coords (assuming cellSize 1, origin centered)
         int centerX = Mathf.RoundToInt(worldCenter.x) + worldWidth/2;

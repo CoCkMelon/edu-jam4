@@ -65,6 +65,7 @@ public class PlayerController2D : MonoBehaviour
     readonly int MOVING_HASH = Animator.StringToHash("moving");
     readonly int DASH_READY_HASH = Animator.StringToHash("dash_ready");
     readonly int GROUNDED_HASH = Animator.StringToHash("grounded");
+    readonly int JUMP_HASH = Animator.StringToHash("jump");
     readonly int VELOCITY_Y_HASH = Animator.StringToHash("velocity_y");
     readonly int VELOCITY_X_HASH = Animator.StringToHash("velocity_x");
 
@@ -83,6 +84,7 @@ public class PlayerController2D : MonoBehaviour
     private float previousYVelocity;
     private Vector2 dashDirection;
     private float dashStartTime;
+    private bool isJumping;
 
     private void Awake()
     {
@@ -126,6 +128,7 @@ public class PlayerController2D : MonoBehaviour
         UpdateTimers();
         HandleJump();
         HandleDash();
+        UpdateJumpState();
         UpdateAnimator();
         FlipSprite();
         HandleSounds();
@@ -245,8 +248,23 @@ public class PlayerController2D : MonoBehaviour
 
             lastGroundedTime = 0;
             lastJumpPressedTime = 0;
+            isJumping = true;
 
             PlaySound(jumpSound, 0.7f);
+        }
+    }
+
+    private void UpdateJumpState()
+    {
+        // Set jump to true when jumping and rising
+        if (!isGrounded && rb.linearVelocity.y > 0 && isJumping)
+        {
+            // Keep jump state true
+        }
+        // Reset jump state when grounded or falling
+        else if (isGrounded || rb.linearVelocity.y <= 0)
+        {
+            isJumping = false;
         }
     }
 
@@ -306,6 +324,7 @@ public class PlayerController2D : MonoBehaviour
         animator.SetBool(MOVING_HASH, Mathf.Abs(rb.linearVelocity.x) > 0.1f);
         animator.SetBool(DASH_READY_HASH, Time.time > lastDashTime + dashCooldown);
         animator.SetBool(GROUNDED_HASH, isGrounded);
+        animator.SetBool(JUMP_HASH, isJumping);
         animator.SetFloat(VELOCITY_Y_HASH, rb.linearVelocity.y);
         animator.SetFloat(VELOCITY_X_HASH, input.moveX+Convert.ToInt32(isDashing));
     }

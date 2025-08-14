@@ -1,0 +1,53 @@
+/* MobileControlsStyle.uss */
+
+/* Base action button styles */
+.action-button {
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+}
+
+/* Jump Button States */
+.jump-button:hover {
+    background-color: rgba(76, 175, 80, 0.8);
+    scale: 1.05;
+}
+
+.jump-button:active {
+    background-color: rgba(56, 142, 60, 0.9);
+    translate: 0 3px;
+    scale: 0.95;
+    border-color: rgba(56, 142, 60, 1);
+}
+
+/* Dash Button States */
+.dash-button:hover {
+    background-color: rgba(33, 150, 243, 0.8);
+    scale: 1.05;
+}
+
+.dash-button:active {
+    background-color: rgba(25, 118, 210, 0.9);
+    translate: 0 3px;
+    scale: 0.95;
+    border-color: rgba(25, 118, 210, 1);
+}
+
+/* Interact Button States */
+.interact-button:hover {
+    background-color: rgba(255, 193, 7, 0.8);
+    scale: 1.05;
+}
+
+.interact-button:active {
+    background-color: rgba(245, 127, 23, 0.9);
+    translate: 0 3px;
+    scale: 0.92;
+    border-color: rgba(245, 127, 23, 1);
+}
+
+/* Pause Button States */
+#PauseButton:active {
+    background-color: rgba(60, 60, 60, 0.8);
+    translate: 0 2px;
+    scale: 0.95;
+}

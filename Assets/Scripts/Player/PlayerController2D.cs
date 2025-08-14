@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController2D : MonoBehaviour
@@ -19,7 +20,7 @@ public class PlayerController2D : MonoBehaviour
     public float acceleration = 80f;
     public float deceleration = 100f;
     [Range(0f, 1f)] public float airControlPercent = 0.65f;
-    [Range(0f, 1f)] public float turnAroundBoost = 1.5f; // Arcade feel when changing direction
+    [Range(0f, 1f)] public float turnAroundBoost = 1.5f;
 
     [Header("Jump Settings")]
     public float jumpForce = 15f;
@@ -28,7 +29,7 @@ public class PlayerController2D : MonoBehaviour
     public float fallGravityMultiplier = 3f;
     public float lowJumpGravityMultiplier = 2.5f;
     public float maxFallSpeed = 20f;
-    public int maxAirJumps = 1; // Double jump capability
+    public int maxAirJumps = 1;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -39,7 +40,7 @@ public class PlayerController2D : MonoBehaviour
     public float dashForce = 25f;
     public float dashDuration = 0.15f;
     public float dashCooldown = 0.8f;
-    public AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 1, 1, 0); // Smooth dash feel
+    public AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
     [Header("Sound Settings")]
     public AudioSource audioSource;
@@ -49,13 +50,14 @@ public class PlayerController2D : MonoBehaviour
     public AudioClip footstepSound;
     [Range(0f, 1f)] public float minLandVolume = 0.3f;
     [Range(0f, 1f)] public float maxLandVolume = 1f;
-    public float landVelocityThreshold = 5f; // Min velocity for land sound
-    public float maxLandVelocity = 25f; // Velocity for max volume
+    public float landVelocityThreshold = 5f;
+    public float maxLandVelocity = 25f;
 
     [Header("References")]
     public Rigidbody2D rb;
     public Animator animator;
     public Collider2D heroCollider;
+    public UIDocument uiDocument; // Reference to your UI document
 
     [Header("Runtime Input State")]
     public InputState input;
@@ -68,6 +70,12 @@ public class PlayerController2D : MonoBehaviour
     readonly int JUMP_HASH = Animator.StringToHash("jump");
     readonly int VELOCITY_Y_HASH = Animator.StringToHash("velocity_y");
     readonly int VELOCITY_X_HASH = Animator.StringToHash("velocity_x");
+
+    // UI Elements
+    private Slider horizontalSlider;
+    private Button jumpButton;
+    private Button dashButton;
+    private Button interactButton;
 
     // State tracking
     private bool isGrounded;
@@ -85,27 +93,47 @@ public class PlayerController2D : MonoBehaviour
     private Vector2 dashDirection;
     private float dashStartTime;
     private bool isJumping;
+    private float movementInputValue;
 
     private void Awake()
     {
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (audioSource == null) audioSource = GetComponent<AudioSource>();
         animator.SetBool(ALIVE_HASH, true);
+
+        // Initialize UI input
+        if (uiDocument != null)
+        {
+            var root = uiDocument.rootVisualElement;
+
+            horizontalSlider = root.Q<Slider>("HorizontalSlider");
+            jumpButton = root.Q<Button>("JumpButton");
+            dashButton = root.Q<Button>("DashButton");
+            interactButton = root.Q<Button>("InteractButton");
+
+            // ✅ Use RegisterCallback for safe lambda subscription
+            jumpButton?.RegisterCallback<ClickEvent>(e => OnJumpButtonPressed());
+            dashButton?.RegisterCallback<ClickEvent>(e => OnDashButtonPressed());
+            interactButton?.RegisterCallback<ClickEvent>(e => OnInteractButtonPressed());
+        }
+        else
+        {
+            Debug.LogWarning("UIDocument not assigned. UI input will not work.");
+        }
     }
 
     private void OnEnable()
     {
-        // MOVE
         var moveAction = new InputAction("Move", InputActionType.Value);
         moveAction.AddCompositeBinding("1DAxis")
             .With("negative", "<Keyboard>/a").With("negative", "<Keyboard>/leftArrow")
             .With("positive", "<Keyboard>/d").With("positive", "<Keyboard>/rightArrow");
         moveAction.AddBinding("<Gamepad>/leftStick/x");
-        moveAction.performed += ctx => input.moveX = ctx.ReadValue<float>();
-        moveAction.canceled += ctx => input.moveX = 0f;
+
+        moveAction.performed += ctx => movementInputValue = ctx.ReadValue<float>();
+        moveAction.canceled += ctx => movementInputValue = 0f;
         moveAction.Enable();
 
-        // JUMP
         var jumpAction = new InputAction("Jump", InputActionType.Button);
         jumpAction.AddBinding("<Keyboard>/space");
         jumpAction.AddBinding("<Gamepad>/buttonSouth");
@@ -113,7 +141,6 @@ public class PlayerController2D : MonoBehaviour
         jumpAction.canceled += ctx => input.jumpHeld = false;
         jumpAction.Enable();
 
-        // DASH
         var dashAction = new InputAction("Dash", InputActionType.Button);
         dashAction.AddBinding("<Keyboard>/leftShift");
         dashAction.AddBinding("<Gamepad>/rightShoulder");
@@ -123,9 +150,17 @@ public class PlayerController2D : MonoBehaviour
 
     private void Update()
     {
+        // Reset each frame so we build a fresh value
+        input.moveX = 0f;
+
         wasGrounded = isGrounded;
         GroundCheck();
         UpdateTimers();
+
+        // Handle all input from all sources
+        UpdateInputFromActions();
+        UpdateInputFromUI();
+
         HandleJump();
         HandleDash();
         UpdateJumpState();
@@ -133,10 +168,9 @@ public class PlayerController2D : MonoBehaviour
         FlipSprite();
         HandleSounds();
 
-        // Track previous Y velocity for landing detection
         previousYVelocity = rb.linearVelocity.y;
 
-        // Reset single-frame inputs
+        // Reset frame-based inputs (jump/dash presses are single frame flags)
         input.jumpPressed = false;
         input.dashPressed = false;
     }
@@ -148,13 +182,80 @@ public class PlayerController2D : MonoBehaviour
         ClampFallSpeed();
     }
 
+    // New helper to unify key/gamepad input reading
+    private void UpdateInputFromActions()
+    {
+        // Keyboard/gamepad moveX is already set via InputAction callbacks —
+        // but instead of +=, store in a temp field when binding
+        // Then, here, we apply it into this frame's input.moveX
+        input.moveX = movementInputValue;
+    }
+
+    // New helper for UI
+    private void UpdateInputFromUI()
+    {
+        if (horizontalSlider != null && Mathf.Abs(horizontalSlider.value) > 0.01f)
+        {
+            input.moveX = horizontalSlider.value;
+        }
+
+        if (jumpButton != null && jumpButton.HasMouseCapture())
+        {
+            input.jumpPressed = true;
+            input.jumpHeld = true;
+        }
+
+        if (dashButton != null && dashButton.HasMouseCapture())
+        {
+            input.dashPressed = true;
+        }
+
+        if (interactButton != null && interactButton.HasMouseCapture())
+        {
+            Interact();
+        }
+    }
+    private void Interact()
+    {
+
+    }
+
+    private void OnJumpButtonPressed()
+    {
+        input.jumpPressed = true;
+        input.jumpHeld = true;
+    }
+
+    private void OnDashButtonPressed()
+    {
+        input.dashPressed = true;
+    }
+
+    private void OnInteractButtonPressed()
+    {
+        // Example: Show interact prompt
+        var root = uiDocument?.rootVisualElement;
+        var prompt = root?.Q<VisualElement>("InteractPrompt");
+        if (prompt != null)
+        {
+            prompt.style.display = DisplayStyle.Flex;
+            Invoke(nameof(HideInteractPrompt), 1.5f);
+        }
+    }
+
+    private void HideInteractPrompt()
+    {
+        var root = uiDocument?.rootVisualElement;
+        var prompt = root?.Q<VisualElement>("InteractPrompt");
+        if (prompt != null) prompt.style.display = DisplayStyle.None;
+    }
+
     private void HandleMovement()
     {
         if (isDashing) return;
 
         float targetSpeed = input.moveX * moveSpeed;
 
-        // Arcade-style instant direction change boost
         bool changingDirection = (input.moveX > 0 && rb.linearVelocity.x < 0) ||
                                 (input.moveX < 0 && rb.linearVelocity.x > 0);
 
@@ -221,7 +322,6 @@ public class PlayerController2D : MonoBehaviour
             }
             else
             {
-                // Apply dash curve for smooth acceleration/deceleration
                 float dashProgress = 1f - (dashTimeLeft / dashDuration);
                 float curveValue = dashCurve.Evaluate(dashProgress);
                 rb.linearVelocity = dashDirection * dashForce * curveValue;
@@ -256,12 +356,10 @@ public class PlayerController2D : MonoBehaviour
 
     private void UpdateJumpState()
     {
-        // Set jump to true when jumping and rising
         if (!isGrounded && rb.linearVelocity.y > 0 && isJumping)
         {
-            // Keep jump state true
+            // Jumping up
         }
-        // Reset jump state when grounded or falling
         else if (isGrounded || rb.linearVelocity.y <= 0)
         {
             isJumping = false;
@@ -277,7 +375,6 @@ public class PlayerController2D : MonoBehaviour
             lastDashTime = Time.time;
             dashStartTime = Time.time;
 
-            // Dash in input direction or facing direction
             float dashX = input.moveX != 0 ? Mathf.Sign(input.moveX) : (facingRight ? 1 : -1);
             dashDirection = new Vector2(dashX, 0).normalized;
 
@@ -287,7 +384,6 @@ public class PlayerController2D : MonoBehaviour
 
     private void HandleSounds()
     {
-        // Landing sound with force-based volume
         if (!wasGrounded && isGrounded && previousYVelocity < -landVelocityThreshold)
         {
             float landForce = Mathf.Abs(previousYVelocity);
@@ -297,7 +393,6 @@ public class PlayerController2D : MonoBehaviour
             PlaySound(landSound, volume);
         }
 
-        // Footstep sounds while moving on ground
         if (isGrounded && Mathf.Abs(rb.linearVelocity.x) > 0.1f && Time.time > lastFootstepTime + footstepInterval)
         {
             float speedPercent = Mathf.Abs(rb.linearVelocity.x) / moveSpeed;
@@ -305,8 +400,6 @@ public class PlayerController2D : MonoBehaviour
 
             PlaySound(footstepSound, volume);
             lastFootstepTime = Time.time;
-
-            // Adjust footstep interval based on speed
             footstepInterval = Mathf.Lerp(0.4f, 0.2f, speedPercent);
         }
     }
@@ -326,7 +419,7 @@ public class PlayerController2D : MonoBehaviour
         animator.SetBool(GROUNDED_HASH, isGrounded);
         animator.SetBool(JUMP_HASH, isJumping);
         animator.SetFloat(VELOCITY_Y_HASH, rb.linearVelocity.y);
-        animator.SetFloat(VELOCITY_X_HASH, input.moveX+Convert.ToInt32(isDashing));
+        animator.SetFloat(VELOCITY_X_HASH, input.moveX + Convert.ToInt32(isDashing));
     }
 
     private void FlipSprite()

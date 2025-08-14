@@ -1,0 +1,139 @@
+name: Unity Multi-Platform Build CI
+
+on: [push]
+
+env:
+  UNITY_PROJECT_NAME: "EduLoop"  # Change this to your project name
+  BUILD_VERSION: "1"               # Set your version
+
+jobs:
+  build-linux-android-webgl:
+    name: Build on Ubuntu (matrix)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform: [WebGL, StandaloneLinux64]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**','Packages/**','ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+            Library-
+
+      - name: Setup Android NDK
+        if: matrix.targetPlatform == 'Android'
+        uses: android-actions/setup-android@v2
+
+      - name: Build (${{ matrix.targetPlatform }})
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEY_ALIAS_NAME: ${{ secrets.KEY_ALIAS_NAME }}
+          KEY_ALIAS_PASS: ${{ secrets.KEY_ALIAS_PASS }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ env.UNITY_PROJECT_NAME }}
+
+      - name: Change Build Directory Ownership
+        run: |
+          sudo chown -R $USER:$USER build
+
+      - name: Organize Build Artifacts
+        run: |
+          mv "build/${{ matrix.targetPlatform }}" "build/${{ env.UNITY_PROJECT_NAME }}-${{ matrix.targetPlatform }}-${{ env.BUILD_VERSION }}"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.UNITY_PROJECT_NAME }}-${{ matrix.targetPlatform }}-${{ env.BUILD_VERSION }}"
+          path: "build/${{ env.UNITY_PROJECT_NAME }}-${{ matrix.targetPlatform }}-${{ env.BUILD_VERSION }}"
+
+  build-windows:
+    name: Build on Windows (StandaloneWindows64)
+    runs-on: windows-2022
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-Windows64-${{ hashFiles('Assets/**','Packages/**','ProjectSettings/**') }}
+          restore-keys: |
+            Library-Windows64-
+            Library-
+
+      - name: Build (StandaloneWindows64)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          buildName: ${{ env.UNITY_PROJECT_NAME }}
+
+      - name: Organize Build Artifacts
+        run: |
+          mv "build/StandaloneWindows64" "build/${{ env.UNITY_PROJECT_NAME }}-Windows64-${{ env.BUILD_VERSION }}/"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.UNITY_PROJECT_NAME }}-Windows64-${{ env.BUILD_VERSION }}"
+          path: "build/${{ env.UNITY_PROJECT_NAME }}-Windows64-${{ env.BUILD_VERSION }}"
+
+  build-macos:
+    name: Build on macOS (StandaloneOSX)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-macOS-${{ hashFiles('Assets/**','Packages/**','ProjectSettings/**') }}
+          restore-keys: |
+            Library-macOS-
+            Library-
+
+      - name: Build (StandaloneOSX)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneOSX
+          buildName: ${{ env.UNITY_PROJECT_NAME }}
+
+      - name: Organize Build Artifacts
+        run: |
+          mv "build/StandaloneOSX" "build/${{ env.UNITY_PROJECT_NAME }}-macOS-${{ env.BUILD_VERSION }}/"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.UNITY_PROJECT_NAME }}-macOS-${{ env.BUILD_VERSION }}"
+          path: "build/${{ env.UNITY_PROJECT_NAME }}-macOS-${{ env.BUILD_VERSION }}"
